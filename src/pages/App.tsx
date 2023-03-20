@@ -2,11 +2,9 @@ import { getDeviceId, sendAnalyticsEvent, Trace, user } from '@uniswap/analytics
 import { CustomUserProperties, getBrowser, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
 import Loader from 'components/Loader'
-import { MenuDropdown } from 'components/NavBar/MenuDropdown'
 import TopLevelModals from 'components/TopLevelModals'
 import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
-import { Box } from 'nft/components/Box'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useIsDarkMode } from 'state/user/hooks'
@@ -21,7 +19,6 @@ import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
 import { useAnalyticsReporter } from '../components/analytics'
 import ErrorBoundary from '../components/ErrorBoundary'
-import { PageTabs } from '../components/NavBar'
 import NavBar from '../components/NavBar'
 import Polling from '../components/Polling'
 import Popups from '../components/Popups'
@@ -30,7 +27,6 @@ import DarkModeQueryParamReader from '../theme/components/DarkModeQueryParamRead
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
 import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
-import Landing from './Landing'
 import MigrateV2 from './MigrateV2'
 import MigrateV2Pair from './MigrateV2/MigrateV2Pair'
 import NotFound from './NotFound'
@@ -214,7 +210,7 @@ export default function App() {
             <Suspense fallback={<Loader />}>
               {isLoaded ? (
                 <Routes>
-                  <Route path="/" element={<Landing />} />
+                  {/* <Route path="/" element={<Landing />} /> */}
 
                   <Route path="tokens" element={<Tokens />}>
                     <Route path=":chainName" />
@@ -284,7 +280,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/nfts/profile"
+                    path="/"
                     element={
                       <Suspense fallback={null}>
                         <Profile />
@@ -316,12 +312,12 @@ export default function App() {
               )}
             </Suspense>
           </BodyWrapper>
-          <MobileBottomBar>
+          {/* <MobileBottomBar>
             <PageTabs />
             <Box marginY="4">
               <MenuDropdown />
             </Box>
-          </MobileBottomBar>
+          </MobileBottomBar> */}
         </StatsigProvider>
       </Trace>
     </ErrorBoundary>

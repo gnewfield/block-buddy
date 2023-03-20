@@ -67,8 +67,8 @@ export const ViewMyNftsAsset = ({
       primaryInfoIcon: asset.collectionIsVerified && <VerifiedIcon height="16px" width="16px" />,
       secondaryInfo: asset.name || asset.tokenId ? asset.name ?? `#${asset.tokenId}` : null,
       selectedInfo: <Trans>Remove from bag</Trans>,
-      notSelectedInfo: <Trans>List for sale</Trans>,
-      disabledInfo: <Trans>Unavailable for listing</Trans>,
+      notSelectedInfo: <Trans>Send</Trans>,
+      disabledInfo: <Trans>Unavailable to send</Trans>,
     }
   }, [asset.asset_contract.name, asset.collectionIsVerified, asset.name, asset.tokenId])
 

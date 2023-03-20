@@ -45,7 +45,7 @@ const WalletDropdownWrapper = styled.div`
     top: unset;
     left: 0;
     right: 0;
-    bottom: 56px;
+    bottom: 0px;
   }
 `
 

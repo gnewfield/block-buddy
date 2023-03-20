@@ -32,6 +32,7 @@ export const leftSideContainer = style([
   sprinkles({
     alignItems: 'center',
     justifyContent: 'flex-start',
+    marginLeft: '6',
   }),
 ])
 
@@ -52,6 +53,7 @@ export const rightSideContainer = style([
   sprinkles({
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginRight: '6',
   }),
 ])
 
@@ -66,6 +68,7 @@ const baseMenuItem = style([
     height: 'min',
     width: 'full',
     textAlign: 'center',
+    whiteSpace: 'nowrap',
   }),
   {
     lineHeight: '24px',
@@ -79,14 +82,14 @@ const baseMenuItem = style([
 export const menuItem = style([
   baseMenuItem,
   sprinkles({
-    color: 'textSecondary',
+    color: 'textTertiary',
   }),
 ])
 
 export const activeMenuItem = style([
   baseMenuItem,
   sprinkles({
-    color: 'textPrimary',
+    color: 'white',
     background: 'backgroundFloating',
   }),
 ])

@@ -2,30 +2,18 @@ import { OpacityHoverState, ScrollBarStyles } from 'components/Common'
 import Resource from 'components/Tokens/TokenDetails/Resource'
 import { MouseoverTooltip } from 'components/Tooltip/index'
 import { useNftGraphqlEnabled } from 'featureFlags/flags/nftlGraphql'
-import { NftActivityType } from 'graphql/data/__generated__/types-and-hooks'
-import { useNftActivity } from 'graphql/data/nft/NftActivity'
 import { Box } from 'nft/components/Box'
-import { reduceFilters } from 'nft/components/collection/Activity'
-import { LoadingSparkle } from 'nft/components/common/Loading/LoadingSparkle'
 import { AssetPriceDetails } from 'nft/components/details/AssetPriceDetails'
-import { Center } from 'nft/components/Flex'
-import { themeVars, vars } from 'nft/css/sprinkles.css'
-import { ActivityFetcher } from 'nft/queries/genie/ActivityFetcher'
-import { ActivityEventResponse, ActivityEventType, CollectionInfoForAsset, GenieAsset } from 'nft/types'
+import { ActivityEventType, CollectionInfoForAsset, GenieAsset } from 'nft/types'
 import { shortenAddress } from 'nft/utils/address'
-import { formatEth, formatEthPrice } from 'nft/utils/currency'
 import { isAudio } from 'nft/utils/isAudio'
 import { isVideo } from 'nft/utils/isVideo'
 import { putCommas } from 'nft/utils/putCommas'
 import { fallbackProvider, getRarityProviderLogo } from 'nft/utils/rarity'
-import { useCallback, useMemo, useReducer, useState } from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import { useInfiniteQuery, useQuery } from 'react-query'
+import { useMemo, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { useIsDarkMode } from 'state/user/hooks'
 import styled from 'styled-components/macro'
 
-import AssetActivity, { LoadingAssetActivity } from './AssetActivity'
 import * as styles from './AssetDetails.css'
 import DetailsContainer from './DetailsContainer'
 import InfoContainer from './InfoContainer'
@@ -275,154 +263,154 @@ export const AssetDetails = ({ asset, collection }: AssetDetailsProps) => {
 
   const { address: contractAddress, tokenId: token_id } = asset
 
-  const { data: priceData } = useQuery<ActivityEventResponse>(
-    [
-      'collectionActivity',
-      {
-        contractAddress,
-      },
-    ],
-    async ({ pageParam = '' }) => {
-      return await ActivityFetcher(
-        contractAddress,
-        {
-          token_id,
-          eventTypes: [ActivityEventType.Sale],
-        },
-        pageParam,
-        '1'
-      )
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.events?.length === 25 ? lastPage.cursor : undefined
-      },
-      refetchInterval: 15000,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
-  )
-  const { nftActivity: gqlPriceData } = useNftActivity(
-    {
-      activityTypes: [NftActivityType.Sale],
-      address: contractAddress,
-      tokenId: token_id,
-    },
-    1,
-    'no-cache'
-  )
+  // const { data: priceData } = useQuery<ActivityEventResponse>(
+  //   [
+  //     'collectionActivity',
+  //     {
+  //       contractAddress,
+  //     },
+  //   ],
+  //   async ({ pageParam = '' }) => {
+  //     return await ActivityFetcher(
+  //       contractAddress,
+  //       {
+  //         token_id,
+  //         eventTypes: [ActivityEventType.Sale],
+  //       },
+  //       pageParam,
+  //       '1'
+  //     )
+  //   },
+  //   {
+  //     getNextPageParam: (lastPage) => {
+  //       return lastPage.events?.length === 25 ? lastPage.cursor : undefined
+  //     },
+  //     refetchInterval: 15000,
+  //     refetchIntervalInBackground: false,
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //   }
+  // )
+  // const { nftActivity: gqlPriceData } = useNftActivity(
+  //   {
+  //     activityTypes: [NftActivityType.Sale],
+  //     address: contractAddress,
+  //     tokenId: token_id,
+  //   },
+  //   1,
+  //   'no-cache'
+  // )
 
   // TODO simplify typecasting when removing graphql flag
-  const lastSalePrice = isNftGraphqlEnabled ? gqlPriceData?.[0]?.price : priceData?.events[0]?.price
-  const formattedEthprice = isNftGraphqlEnabled
-    ? formatEth(parseFloat(lastSalePrice ?? ''))
-    : formatEthPrice(lastSalePrice) || 0
-  const formattedPrice = isNftGraphqlEnabled
-    ? formattedEthprice
-    : lastSalePrice
-    ? putCommas(parseFloat(formattedEthprice.toString())).toString()
-    : null
-  const [activeFilters, filtersDispatch] = useReducer(reduceFilters, initialFilterState)
+  // const lastSalePrice = isNftGraphqlEnabled ? gqlPriceData?.[0]?.price : priceData?.events[0]?.price
+  // const formattedEthprice = isNftGraphqlEnabled
+  //   ? formatEth(parseFloat(lastSalePrice ?? ''))
+  //   : formatEthPrice(lastSalePrice) || 0
+  // const formattedPrice = isNftGraphqlEnabled
+  //   ? formattedEthprice
+  //   : lastSalePrice
+  //   ? putCommas(parseFloat(formattedEthprice.toString())).toString()
+  //   : null
+  // const [activeFilters, filtersDispatch] = useReducer(reduceFilters, initialFilterState)
 
-  const Filter = useCallback(
-    function ActivityFilter({ eventType }: { eventType: ActivityEventType }) {
-      const isActive = activeFilters[eventType]
-      const isDarkMode = useIsDarkMode()
+  // const Filter = useCallback(
+  //   function ActivityFilter({ eventType }: { eventType: ActivityEventType }) {
+  //     const isActive = activeFilters[eventType]
+  //     const isDarkMode = useIsDarkMode()
 
-      return (
-        <FilterBox
-          backgroundColor={
-            isActive ? (isDarkMode ? vars.color.gray500 : vars.color.gray200) : themeVars.colors.backgroundInteractive
-          }
-          onClick={() => filtersDispatch({ eventType })}
-        >
-          {eventType === ActivityEventType.CancelListing
-            ? 'Cancellations'
-            : eventType.charAt(0) + eventType.slice(1).toLowerCase() + 's'}
-        </FilterBox>
-      )
-    },
-    [activeFilters]
-  )
+  //     return (
+  //       <FilterBox
+  //         backgroundColor={
+  //           isActive ? (isDarkMode ? vars.color.gray500 : vars.color.gray200) : themeVars.colors.backgroundInteractive
+  //         }
+  //         onClick={() => filtersDispatch({ eventType })}
+  //       >
+  //         {eventType === ActivityEventType.CancelListing
+  //           ? 'Cancellations'
+  //           : eventType.charAt(0) + eventType.slice(1).toLowerCase() + 's'}
+  //       </FilterBox>
+  //     )
+  //   },
+  //   [activeFilters]
+  // )
 
-  const {
-    data: eventsData,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isSuccess,
-    isLoading: isActivityLoading,
-  } = useInfiniteQuery<ActivityEventResponse>(
-    [
-      'collectionActivity',
-      {
-        contractAddress,
-        activeFilters,
-        token_id,
-      },
-    ],
-    async ({ pageParam = '' }) => {
-      return await ActivityFetcher(
-        contractAddress,
-        {
-          token_id,
-          eventTypes: Object.keys(activeFilters)
-            .map((key) => key as ActivityEventType)
-            .filter((key) => activeFilters[key]),
-        },
-        pageParam
-      )
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        return lastPage.events?.length === 25 ? lastPage.cursor : undefined
-      },
-      refetchInterval: 15000,
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    }
-  )
+  // const {
+  //   data: eventsData,
+  //   fetchNextPage,
+  //   hasNextPage,
+  //   isFetchingNextPage,
+  //   isSuccess,
+  //   isLoading: isActivityLoading,
+  // } = useInfiniteQuery<ActivityEventResponse>(
+  //   [
+  //     'collectionActivity',
+  //     {
+  //       contractAddress,
+  //       activeFilters,
+  //       token_id,
+  //     },
+  //   ],
+  //   async ({ pageParam = '' }) => {
+  //     return await ActivityFetcher(
+  //       contractAddress,
+  //       {
+  //         token_id,
+  //         eventTypes: Object.keys(activeFilters)
+  //           .map((key) => key as ActivityEventType)
+  //           .filter((key) => activeFilters[key]),
+  //       },
+  //       pageParam
+  //     )
+  //   },
+  //   {
+  //     getNextPageParam: (lastPage) => {
+  //       return lastPage.events?.length === 25 ? lastPage.cursor : undefined
+  //     },
+  //     refetchInterval: 15000,
+  //     refetchIntervalInBackground: false,
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //   }
+  // )
 
-  const {
-    nftActivity: gqlEventsData,
-    hasNext,
-    loadMore,
-    loading,
-    error,
-  } = useNftActivity(
-    {
-      activityTypes: Object.keys(activeFilters)
-        .map((key) => key as NftActivityType)
-        .filter((key) => activeFilters[key]),
-      address: contractAddress,
-      tokenId: token_id,
-    },
-    25
-  )
+  // const {
+  //   nftActivity: gqlEventsData,
+  //   hasNext,
+  //   loadMore,
+  //   loading,
+  //   error,
+  // } = useNftActivity(
+  //   {
+  //     activityTypes: Object.keys(activeFilters)
+  //       .map((key) => key as NftActivityType)
+  //       .filter((key) => activeFilters[key]),
+  //     address: contractAddress,
+  //     tokenId: token_id,
+  //   },
+  //   25
+  // )
 
-  const { events, gatedHasNext, gatedLoadMore, gatedLoading, gatedSuccess } = useMemo(() => {
-    return {
-      events: isNftGraphqlEnabled ? gqlEventsData : eventsData?.pages.map((page) => page.events).flat(),
-      gatedHasNext: isNftGraphqlEnabled ? hasNext : hasNextPage,
-      gatedLoadMore: isNftGraphqlEnabled ? loadMore : fetchNextPage,
-      gatedLoading: isNftGraphqlEnabled ? loading : isActivityLoading,
-      gatedSuccess: isNftGraphqlEnabled ? !error : isSuccess,
-    }
-  }, [
-    error,
-    eventsData?.pages,
-    fetchNextPage,
-    gqlEventsData,
-    hasNext,
-    hasNextPage,
-    isActivityLoading,
-    isNftGraphqlEnabled,
-    isSuccess,
-    loadMore,
-    loading,
-  ])
+  // const { events, gatedHasNext, gatedLoadMore, gatedLoading, gatedSuccess } = useMemo(() => {
+  //   return {
+  //     events: isNftGraphqlEnabled ? gqlEventsData : eventsData?.pages.map((page) => page.events).flat(),
+  //     gatedHasNext: isNftGraphqlEnabled ? hasNext : hasNextPage,
+  //     gatedLoadMore: isNftGraphqlEnabled ? loadMore : fetchNextPage,
+  //     gatedLoading: isNftGraphqlEnabled ? loading : isActivityLoading,
+  //     gatedSuccess: isNftGraphqlEnabled ? !error : isSuccess,
+  //   }
+  // }, [
+  //   error,
+  //   eventsData?.pages,
+  //   fetchNextPage,
+  //   gqlEventsData,
+  //   hasNext,
+  //   hasNextPage,
+  //   isActivityLoading,
+  //   isNftGraphqlEnabled,
+  //   isSuccess,
+  //   loadMore,
+  //   loading,
+  // ])
 
   const rarity = asset?.rarity?.providers?.[0]
   const [showHolder, setShowHolder] = useState(false)
@@ -475,7 +463,7 @@ export const AssetDetails = ({ asset, collection }: AssetDetailsProps) => {
           <TraitsContainer asset={asset} />
         </InfoContainer>
       )}
-      <InfoContainer
+      {/* <InfoContainer
         primaryHeader="Activity"
         defaultOpen
         secondaryHeader={formattedPrice ? `Last Sale: ${formattedPrice} ETH` : undefined}
@@ -517,7 +505,7 @@ export const AssetDetails = ({ asset, collection }: AssetDetailsProps) => {
             </>
           )}
         </>
-      </InfoContainer>
+      </InfoContainer> */}
       <InfoContainer
         primaryHeader="Description"
         defaultOpen

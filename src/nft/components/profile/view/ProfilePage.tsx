@@ -39,15 +39,18 @@ const ProfileHeader = styled.div`
   font-size: 28px;
   font-weight: 500;
   line-height: 38px;
-  padding-bottom: 16px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid ${({ theme }) => theme.backgroundOutline};
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
     font-size: 20px;
     line-height: 28px;
     margin-bottom: 0px;
   }
+`
+
+const GalleryNavBar = styled.div`
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid ${({ theme }) => theme.backgroundOutline};
 `
 
 export const DEFAULT_WALLET_ASSET_QUERY_AMOUNT = 25
@@ -110,7 +113,7 @@ export const ProfilePage = () => {
   return (
     <ProfilePageColumn width="full" paddingTop={{ sm: `${PADDING}`, md: '40' }}>
       <>
-        <ProfileHeader>My NFTs</ProfileHeader>
+        {/* <ProfileHeader>My NFTs</ProfileHeader> */}
         <Row alignItems="flex-start" position="relative">
           <FilterSidebar
             fetchNextPage={fetchNextPage}
@@ -229,13 +232,16 @@ const ProfilePageNfts = ({
           }}
           paddingY="20"
         >
-          <Row gap="8" flexWrap="nowrap" justifyContent="space-between">
-            <FilterButton
-              isMobile={isMobile}
-              isFiltersExpanded={isFiltersExpanded}
-              onClick={() => setFiltersExpanded(!isFiltersExpanded)}
-            />
-          </Row>
+          <GalleryNavBar>
+            <Row gap="8" flexWrap="nowrap" justifyContent="space-between">
+              <ProfileHeader>My NFTs</ProfileHeader>
+              <FilterButton
+                isMobile={isMobile}
+                isFiltersExpanded={isFiltersExpanded}
+                onClick={() => setFiltersExpanded(!isFiltersExpanded)}
+              />
+            </Row>
+          </GalleryNavBar>
           <Row>
             <CollectionFiltersRow
               collections={walletCollections}

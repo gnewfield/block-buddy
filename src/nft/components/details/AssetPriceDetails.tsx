@@ -16,7 +16,6 @@ import {
   timeLeft,
   useUsdPrice,
 } from 'nft/utils'
-import { shortenAddress } from 'nft/utils/address'
 import { useMemo } from 'react'
 import { Upload } from 'react-feather'
 import { useQuery } from 'react-query'
@@ -371,7 +370,7 @@ export const AssetPriceDetails = ({ asset, collection }: AssetPriceDetailsProps)
         </CollectionNameContainer>
         <AssetHeader>{asset.name ?? `${asset.collectionName} #${asset.tokenId}`}</AssetHeader>
       </AssetInfoContainer>
-      {isOwner ? (
+      {/* {isOwner ? (
         <OwnerContainer asset={walletAsset} />
       ) : isForSale ? (
         <BestPriceContainer>
@@ -418,8 +417,8 @@ export const AssetPriceDetails = ({ asset, collection }: AssetPriceDetailsProps)
         </BestPriceContainer>
       ) : (
         <NotForSale collectionName={collection.collectionName ?? 'this collection'} collectionUrl={asset.address} />
-      )}
-      {isForSale && (
+      )} */}
+      {/* {isForSale && (
         <OwnerInformationContainer>
           {asset.tokenType !== 'ERC1155' && asset.ownerAddress && (
             <ThemedText.BodySmall color="textSecondary" lineHeight="20px">
@@ -438,7 +437,7 @@ export const AssetPriceDetails = ({ asset, collection }: AssetPriceDetailsProps)
             )}
           </OwnerText>
         </OwnerInformationContainer>
-      )}
+      )} */}
     </Container>
   )
 }

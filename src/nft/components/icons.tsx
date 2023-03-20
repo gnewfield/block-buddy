@@ -17,6 +17,79 @@ export const UniIcon = (props: SVGProps) => (
   </svg>
 )
 
+export const BlockBuddyIcon = (props: SVGProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="500"
+    zoomAndPan="magnify"
+    viewBox="100 100 100 100"
+    height="500"
+    preserveAspectRatio="xMidYMid meet"
+    version="1.0"
+  >
+    <filter x="0%" y="0%" width="100%" height="100%" id="12e1a4cbf7">
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" colorInterpolationFilters="sRGB" />
+    </filter>
+    <filter x="0%" y="0%" width="100%" height="100%" id="c8e70f9e72">
+      <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.2126 0.7152 0.0722 0 0" colorInterpolationFilters="sRGB" />
+    </filter>
+    <clipPath id="9ac89167fd">
+      <path
+        d="M 41 116.195312 L 334.484375 116.195312 L 334.484375 258.695312 L 41 258.695312 Z M 41 116.195312 "
+        clipRule="nonzero"
+      />
+    </clipPath>
+    <path
+      fill="#000000"
+      d="M 363.792969 34.363281 L 375 34.363281 L 375 340.636719 L 363.792969 340.636719 Z M 363.792969 34.363281 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 0 34.363281 L 11.207031 34.363281 L 11.207031 340.636719 L 0 340.636719 Z M 0 34.363281 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 34.363281 0 L 340.636719 0 L 340.636719 11.207031 L 34.363281 11.207031 Z M 34.363281 0 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 34.363281 363.792969 L 340.636719 363.792969 L 340.636719 375 L 34.363281 375 Z M 34.363281 363.792969 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 363.792969 11.207031 L 363.792969 34.363281 L 375 34.363281 L 375 0 L 340.636719 0 L 340.636719 11.207031 Z M 363.792969 11.207031 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 11.207031 11.207031 L 34.363281 11.207031 L 34.363281 0 L 0 0 L 0 34.363281 L 11.207031 34.363281 Z M 11.207031 11.207031 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 363.792969 363.792969 L 340.636719 363.792969 L 340.636719 375 L 375 375 L 375 340.636719 L 363.792969 340.636719 Z M 363.792969 363.792969 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+    <path
+      fill="#000000"
+      d="M 11.207031 363.792969 L 11.207031 340.636719 L 0 340.636719 L 0 375 L 34.363281 375 L 34.363281 363.792969 Z M 11.207031 363.792969 "
+      fillOpacity="1"
+      fillRule="nonzero"
+    />
+  </svg>
+)
+
 export const ChevronUpIcon = ({
   secondaryColor,
   secondaryWidth,

@@ -3,20 +3,17 @@ import { useWeb3React } from '@web3-react/core'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
 import { useIsNftPage } from 'hooks/useIsNftPage'
-import { useIsPoolsPage } from 'hooks/useIsPoolsPage'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
 import { useProfilePageState } from 'nft/hooks'
-import { ProfilePageStateType } from 'nft/types'
 import { ReactNode } from 'react'
-import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { NavLink, NavLinkProps, useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import { BREAKPOINTS } from 'theme'
 
-import { Bag } from './Bag'
+import BlockBuddyLogo from '../../assets/images/block-buddy-logo-white.png'
 import { ChainSelector } from './ChainSelector'
-import { MenuDropdown } from './MenuDropdown'
-import { SearchBar } from './SearchBar'
 import * as styles from './style.css'
 
 const Nav = styled.nav`
@@ -24,6 +21,7 @@ const Nav = styled.nav`
   width: 100%;
   height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
+  background: ${({ theme }) => theme.accentAction};
 `
 
 interface MenuItemProps {
@@ -48,31 +46,48 @@ const MenuItem = ({ href, dataTestId, id, isActive, children }: MenuItemProps) =
   )
 }
 
-export const PageTabs = () => {
+const PageTabs = () => {
   const { pathname } = useLocation()
   const { chainId: connectedChainId } = useWeb3React()
   const chainName = chainIdToBackendName(connectedChainId)
 
-  const isPoolActive = useIsPoolsPage()
-  const isNftPage = useIsNftPage()
-
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
-        <Trans>Swap</Trans>
+        <Trans>Home</Trans>
       </MenuItem>
       <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
-        <Trans>Tokens</Trans>
+        <Trans>My NFTs</Trans>
       </MenuItem>
-      <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
-        <Trans>NFTs</Trans>
+      <MenuItem dataTestId="nft-nav" href="/nfts">
+        <Trans>Me</Trans>
       </MenuItem>
-      <MenuItem href="/pools" dataTestId="pool-nav-link" isActive={isPoolActive}>
-        <Trans>Pools</Trans>
+      <MenuItem href="/pools">
+        <Trans>About</Trans>
       </MenuItem>
     </>
   )
 }
+
+const Logo = styled.img`
+  height: 48px;
+  width: 48px;
+  border-radius: 8px;
+`
+
+const StyledBox = styled.div`
+  background-color: ${({ theme }) => theme.backgroundInteractive};
+  border-radius: 9999px;
+`
+const Title = styled.h1`
+  display: none;
+  color: white;
+
+  @media screen and (min-width: ${BREAKPOINTS.sm}px) {
+    font-size: 48px;
+    display: flex;
+  }
+`
 
 const Navbar = () => {
   const isNftPage = useIsNftPage()
@@ -85,46 +100,42 @@ const Navbar = () => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
-              <UniIcon
+              {/* <BlockBuddyIcon
                 width="48"
                 height="48"
                 data-testid="uniswap-logo"
                 className={styles.logo}
-                onClick={() => {
-                  navigate({
-                    pathname: '/',
-                    search: '?intro=true',
-                  })
-                }}
-              />
+                // onClick={() => {
+                //   navigate({
+                //     pathname: '/',
+                //     search: '?intro=true',
+                //   })
+                // }}
+              /> */}
+              {/* <BlockBuddyLogo /> */}
+              <Row>
+                <Logo src={BlockBuddyLogo} alt="BlockBuddy logo" />
+                {/* <Title>BlockBuddy</Title> */}
+              </Row>
             </Box>
-            {!isNftPage && (
-              <Box display={{ sm: 'flex', lg: 'none' }}>
-                <ChainSelector leftAlign={true} />
-              </Box>
-            )}
             <Row gap={{ xl: '0', xxl: '8' }} display={{ sm: 'none', lg: 'flex' }}>
               <PageTabs />
             </Row>
           </Box>
-          <Box className={styles.searchContainer}>
+          {/* <Box className={styles.searchContainer}>
             <SearchBar />
-          </Box>
+          </Box> */}
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
-              <Box position="relative" display={{ sm: 'flex', xl: 'none' }}>
+              <StyledBox>
+                <ChainSelector leftAlign={true} />
+              </StyledBox>
+              {/* <Box position="relative" display={{ sm: 'flex', xl: 'none' }}>
                 <SearchBar />
               </Box>
               <Box display={{ sm: 'none', lg: 'flex' }}>
                 <MenuDropdown />
-              </Box>
-              {isNftPage && sellPageState !== ProfilePageStateType.LISTING && <Bag />}
-              {!isNftPage && (
-                <Box display={{ sm: 'none', lg: 'flex' }}>
-                  <ChainSelector />
-                </Box>
-              )}
-
+              </Box> */}
               <Web3Status />
             </Row>
           </Box>
